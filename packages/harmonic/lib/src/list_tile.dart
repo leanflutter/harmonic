@@ -1,8 +1,6 @@
-// import 'package:flutter/cupertino.dart';
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:harmonic/src/theme.dart';
 
 class HarmonicListTile extends StatefulWidget {
@@ -42,23 +40,23 @@ class _HarmonicListTileState extends State<HarmonicListTile> {
 
   @override
   Widget build(BuildContext context) {
-    HarmonicThemeData theme = HarmonicTheme.of(context);
+    HarmonicThemeData themeData = HarmonicTheme.of(context);
 
     final TextStyle titleTextStyle = TextStyle(
-      color: theme.fontPrimaryColor,
+      color: themeData.fontPrimaryColor,
       fontWeight: FontWeight.w500,
       fontSize: 16,
     );
 
     final TextStyle subtitleTextStyle = TextStyle(
-      color: theme.fontSecondaryColor,
+      color: themeData.fontSecondaryColor,
       fontWeight: FontWeight.normal,
       fontSize: 14,
     );
 
     final TextStyle? additionalInfoTextStyle = widget.additionalInfo != null
         ? TextStyle(
-            color: theme.fontSecondaryColor,
+            color: themeData.fontSecondaryColor,
             fontWeight: FontWeight.normal,
             fontSize: 14,
           )
@@ -100,15 +98,14 @@ class _HarmonicListTileState extends State<HarmonicListTile> {
 
     Color? backgroundColor = widget.backgroundColor;
     if (_tapped) {
-      backgroundColor = widget.backgroundColorActivated;
+      backgroundColor = widget.backgroundColorActivated ??
+          themeData.compBackgroundTertiaryColor;
     }
 
-    final double minHeight = 48;
-
     final Widget child = Container(
-      constraints: BoxConstraints(
+      constraints: const BoxConstraints(
         minWidth: double.infinity,
-        minHeight: minHeight,
+        minHeight: 48,
       ),
       color: backgroundColor,
       child: Padding(

@@ -26,9 +26,9 @@ class HarmonicListSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    HarmonicThemeData theme = HarmonicTheme.of(context);
+    HarmonicThemeData themeData = HarmonicTheme.of(context);
 
-    final Color dividerColor = separatorColor ?? theme.compDividerColor;
+    final Color dividerColor = separatorColor ?? themeData.compDividerColor;
     final double dividerHeight = 1.0 / MediaQuery.devicePixelRatioOf(context);
 
     // Short divider is used between rows.
@@ -41,7 +41,10 @@ class HarmonicListSection extends StatelessWidget {
       height: dividerHeight,
     );
 
-    TextStyle style = const TextStyle();
+    TextStyle style = TextStyle(
+      color: themeData.fontSecondaryColor,
+      fontSize: 14,
+    );
 
     Widget? headerWidget, footerWidget;
 
@@ -67,14 +70,15 @@ class HarmonicListSection extends StatelessWidget {
       decoratedChildrenGroup = DecoratedBox(
         decoration: decoration ??
             BoxDecoration(
-              color: decoration?.color ?? theme.compBackgroundPrimaryTransColor,
+              color: decoration?.color ??
+                  themeData.compBackgroundPrimaryTransColor,
               borderRadius: childrenGroupBorderRadius,
             ),
         child: Column(children: childrenWithDividers),
       );
 
-      decoratedChildrenGroup = Padding(
-        padding: margin,
+      decoratedChildrenGroup = Container(
+        margin: margin,
         child: clipBehavior == Clip.none
             ? decoratedChildrenGroup
             : ClipRRect(
@@ -89,24 +93,41 @@ class HarmonicListSection extends StatelessWidget {
       decoration: const BoxDecoration(),
       child: Column(
         children: <Widget>[
-          const SizedBox(height: 10),
           if (headerWidget != null)
-            Align(
-              alignment: AlignmentDirectional.centerStart,
-              child: Padding(
-                padding: const EdgeInsets.all(0),
-                child: headerWidget,
+            Container(
+              constraints: const BoxConstraints(
+                minWidth: double.infinity,
+                minHeight: 48,
               ),
-            ),
+              alignment: AlignmentDirectional.bottomStart,
+              margin: margin,
+              padding: const EdgeInsets.only(
+                left: 12,
+                right: 12,
+                bottom: 8,
+              ),
+              child: headerWidget,
+            )
+          else
+            const SizedBox(height: 8),
           if (decoratedChildrenGroup != null) decoratedChildrenGroup,
           if (footerWidget != null)
-            Align(
-              alignment: AlignmentDirectional.centerStart,
-              child: Padding(
-                padding: const EdgeInsets.all(0),
-                child: footerWidget,
+            Container(
+              constraints: const BoxConstraints(
+                minWidth: double.infinity,
+                minHeight: 48,
               ),
-            ),
+              alignment: AlignmentDirectional.topStart,
+              margin: margin,
+              padding: const EdgeInsets.only(
+                left: 12,
+                right: 12,
+                top: 8,
+              ),
+              child: footerWidget,
+            )
+          else
+            const SizedBox(height: 4),
         ],
       ),
     );
